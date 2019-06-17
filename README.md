@@ -1,5 +1,5 @@
 # IstioAzureCloudShell
-Sets up your Azure Cloud Shell to use the istio command line.
+Sets up your Azure Cloud Shell to use the istio command line (istioctl).
 
 # SETUP:
 1. Clone this file to your cloud shell. 
