@@ -80,6 +80,5 @@ helm install install/kubernetes/helm/istio --name istio --namespace istio-system
   --set certmanager.email=$EMAIL \
   --values install/kubernetes/helm/istio/values-istio-demo.yaml 
 
-#kubectl get svc -n istio-system --output wide
-#kubectl get pods -n istio-system
+
 cd ..
