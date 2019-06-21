@@ -6,7 +6,7 @@
 
 
 BIN="~/bin"
-ISTIO_VERSION=1.1.3
+ISTIO_VERSION=1.2.0
 
 if [ -d ~/bin ] ;
 then
