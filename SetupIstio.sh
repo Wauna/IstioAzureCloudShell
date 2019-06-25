@@ -10,6 +10,7 @@ cd istio-$ISTIO_VERSION
 echo "Creating namespace..."
 #  CREATE THE NAMESPACE
 kubectl create namespace istio-system
+kubectl apply -f ../default-limits.yaml --namespace=istio-system
 
 
 echo "Creating grafana secret..."
@@ -74,17 +75,27 @@ echo "Installing Istio..."
 helm install install/kubernetes/helm/istio --name istio --namespace istio-system \
   --set global.controlPlaneSecurityEnabled=true \
   --set mixer.adapters.useAdapterCRDs=false \
+  --set mixer.policy.autoscaleEnabled=false \
+  --set mixer.policy.replicaCount=1 \
+  --set pilot.autoscaleEnabled=false \
+  --set pilot.replicaCount=1 \
+  --set pilot.resources.limits.memory=256Mi \
   --set grafana.enabled=true \
+  --set grafana.security.enabled=true \
   --set tracing.enabled=false \
   --set kiali.enabled=true \
   --set gateways.istio-ingressgateway.sds.enabled=true \
+  --set gateways.istio-ingressgateway.sds.resources.limits.memory=256Mi \
+  --set gateways.istio-ingressgateway.autoscaleEnabled=false \
+  --set gateways.istio-ingressgateway.replicaCount=1 \
+  --set gateways.istio-ingressgateway.resources.limits.memory=256Mi \
+  --set gateways.istio-ingressgateway.resources.limits.cpu=200m \
   --set global.k8sIngress.enabled=true \
   --set global.k8sIngress.enableHttps=true \
   --set global.k8sIngress.gatewayName=ingressgateway \
   --set certmanager.enabled=true \
   --set certmanager.email="ctheis@hycite.com" \
   --values install/kubernetes/helm/istio/values-istio-demo-auth.yaml 
-#--set grafana.security.enabled=true \
   
 
 cd ..
