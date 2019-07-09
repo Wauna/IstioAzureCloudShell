@@ -3,7 +3,7 @@ ISTIO_VERSION="1.2.0"
 EMAIL="ctheis@hycie.com"
 GRAFANA_USER="grafana"
 KIALI_USER="kiali"
-SETUP_PWD="test12345" #used for granfa and kiali
+SETUP_PWD="blablahblah" #used for granfa and kiali
 
 cd istio-$ISTIO_VERSION
 
@@ -97,5 +97,32 @@ helm install install/kubernetes/helm/istio --name istio --namespace istio-system
   --set certmanager.email="ctheis@hycite.com" \
   --values install/kubernetes/helm/istio/values-istio-demo-auth.yaml 
   
-
+ # LOW RESOURCE INSTALLTION
+  helm upgrade istio install/kubernetes/helm/istio \
+  --set global.controlPlaneSecurityEnabled=true \
+  --set mixer.adapters.useAdapterCRDs=false \
+  --set mixer.policy.autoscaleEnabled=false \
+  --set mixer.policy.replicaCount=1 \
+  --set pilot.autoscaleEnabled=false \
+  --set pilot.replicaCount=1 \
+  --set pilot.resources.request.memory=128Mi \
+  --set pilot.resources.limits.memory=256Mi \
+  --set grafana.enabled=true \
+  --set grafana.security.enabled=true \
+  --set tracing.enabled=false \
+  --set kiali.enabled=true \
+  --set gateways.istio-ingressgateway.sds.enabled=true \
+  --set gateways.istio-ingressgateway.sds.resources.request.memory=128Mi \
+  --set gateways.istio-ingressgateway.sds.resources.limits.memory=256Mi \
+  --set gateways.istio-ingressgateway.autoscaleEnabled=false \
+  --set gateways.istio-ingressgateway.replicaCount=1 \
+  --set gateways.istio-ingressgateway.resources.request.memory=128Mi \
+  --set gateways.istio-ingressgateway.resources.limits.memory=256Mi \
+  --set gateways.istio-ingressgateway.resources.limits.cpu=200m \
+  --set global.k8sIngress.enabled=true \
+  --set global.k8sIngress.enableHttps=true \
+  --set global.k8sIngress.gatewayName=ingressgateway \
+  --set certmanager.enabled=true \
+  --set certmanager.email="ctheis@hycite.com" \
+  --values install/kubernetes/helm/istio/values-istio-demo-auth.yaml 
 cd ..
